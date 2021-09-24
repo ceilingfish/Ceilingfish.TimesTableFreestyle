@@ -1,0 +1,72 @@
+@using System.Text;
+
+<table>
+    <tr>
+        <td>
+            <button @onclick="() => PressNumber(1)">1</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(2)">2</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(3)">3</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button @onclick="() => PressNumber(4)">4</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(5)">5</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(6)">6</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button @onclick="() => PressNumber(7)">7</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(8)">8</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(9)">9</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button>&lt;</button>
+        </td>
+        <td>
+            <button @onclick="() => PressNumber(0)">0</button>
+        </td>
+        <td>
+            <button @onclick="SubmitNumber">Go</button>
+        </td>
+    </tr>
+</table>
+
+@code {
+
+    private readonly StringBuilder _number = new StringBuilder();
+
+    [Parameter]
+    public EventCallback OnNumberSubmitted { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnNumberPressed { get; set; }
+
+
+    private async Task PressNumber(int number)
+    {
+        _number.Append(number);
+        await OnNumberPressed.InvokeAsync(int.Parse(_number.ToString()));
+    }
+
+    private async Task SubmitNumber()
+    {
+        await OnNumberSubmitted.InvokeAsync();
+        _number.Clear();
+    }
+}

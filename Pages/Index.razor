@@ -1,7 +1,41 @@
-﻿@page "/"
+@page "/"
 
-<h1>Hello, world!</h1>
+<section name="question">
+    <span>@FirstNumber</span> x <span>@SecondNumber</span>
+</section>
+<div>@UserAnswer</div>
+<NumberInput OnNumberPressed="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+@foreach (var result in Results) {
+    if (result) {
+        <span style="color: green">&#10004;</span>
+    }
+    else {
+        <span style="color: red">&#10008;</span>
+    }
+}
+@code {
+    int FirstNumber { get; set; }
+    int SecondNumber { get; set; }
+    int? UserAnswer { get; set; }
+    List<bool> Results = new ();
 
-Welcome to your new app.
+    private void GenerateQuestion()
+    {
+        var random = new Random();
+        FirstNumber = random.Next(1, 12);
+        SecondNumber = random.Next(1, 2) * 5;
+    }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    private void CheckAnswer()
+    {
+        var correct = UserAnswer == (FirstNumber * SecondNumber);
+        Results.Add(correct);
+
+        UserAnswer = null;
+        GenerateQuestion();
+    }
+
+    private void UpdateAnswerDisplay(int number) {
+        UserAnswer = number;
+    }
+}
