@@ -19,6 +19,11 @@
     int? UserAnswer { get; set; }
     List<bool> Results = new ();
 
+    protected override void OnInitialized()
+    {
+        GenerateQuestion();
+    }
+
     private void GenerateQuestion()
     {
         var random = new Random();
