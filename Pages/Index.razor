@@ -1,23 +1,28 @@
 @page "/"
 
-<section name="question">
-    <span>@FirstNumber</span> x <span>@SecondNumber</span>
-</section>
-<div>@UserAnswer</div>
-<NumberInput OnNumberChanged="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+<div class="container">
+    <div id="question-display">
+        @FirstNumber <span class="operator">x</span> @SecondNumber
+    </div>
+    <UserAnswerDisplay Value="UserAnswer" />
+    <NumberInput OnNumberChanged="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+</div>
+
+<ul>
 @foreach (var result in Results) {
-    if (result) {
-        <span style="color: green">&#10004;</span>
+    if (result.Correct) {
+        <li class="correct-answer">&#10004;</li>
     }
     else {
-        <span style="color: red">&#10008;</span>
+        <li class="wrong-answer">&#10008; <strong>@result.CorrectAnswer</strong></li>
     }
 }
+</ul>
 @code {
     int FirstNumber { get; set; }
     int SecondNumber { get; set; }
     int? UserAnswer { get; set; }
-    List<bool> Results = new ();
+    List<(bool Correct, string CorrectAnswer)> Results = new ();
 
     protected override void OnInitialized()
     {
@@ -34,7 +39,7 @@
     private void CheckAnswer()
     {
         var correct = UserAnswer == (FirstNumber * SecondNumber);
-        Results.Add(correct);
+        Results.Add((correct, $"{FirstNumber} x {SecondNumber} = {FirstNumber * SecondNumber}"));
 
         UserAnswer = null;
         GenerateQuestion();

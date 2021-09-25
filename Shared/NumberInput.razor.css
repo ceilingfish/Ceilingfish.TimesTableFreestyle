@@ -5,4 +5,10 @@
 #number-input button {
     width: inherit;
     height: 120px;
+    background-color: bisque;
+    font-size: xx-large;
+}
+
+#number-input .submit-number button {
+    background-color: darkseagreen;
 }

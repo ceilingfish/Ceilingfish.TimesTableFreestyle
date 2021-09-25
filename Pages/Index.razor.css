@@ -1,0 +1,8 @@
+#question-display {
+    text-align: center;
+    font-size: 300%;
+}
+
+#question-display .operator {
+    color: red;
+}

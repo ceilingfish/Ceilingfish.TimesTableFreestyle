@@ -35,13 +35,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col delete-number">
             <button @onclick="RemoveNumber">&lt;</button>
         </div>
         <div class="col">
             <button @onclick="() => PressNumber(0)">0</button>
         </div>
-        <div class="col">
+        <div class="col submit-number">
             <button @onclick="SubmitNumber">Go</button>
         </div>
     </div>
@@ -66,6 +66,8 @@
 
     private async Task RemoveNumber()
     {
+        if(_number.Length == 0) return;
+
         _number.Remove(_number.Length-1,1);
         await OnNumberChanged.InvokeAsync(int.TryParse(_number.ToString(), out var result) ? result : null);
     }
