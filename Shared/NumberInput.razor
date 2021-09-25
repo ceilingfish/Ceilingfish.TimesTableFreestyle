@@ -1,51 +1,51 @@
 @using System.Text;
 
-<table>
-    <tr>
-        <td>
+<div class="container" id="number-input">
+    <div class="row">
+        <div class="col">
             <button @onclick="() => PressNumber(1)">1</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(2)">2</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(3)">3</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <button @onclick="() => PressNumber(4)">4</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(5)">5</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(6)">6</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <button @onclick="() => PressNumber(7)">7</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(8)">8</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(9)">9</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <button>&lt;</button>
-        </td>
-        <td>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button @onclick="RemoveNumber">&lt;</button>
+        </div>
+        <div class="col">
             <button @onclick="() => PressNumber(0)">0</button>
-        </td>
-        <td>
+        </div>
+        <div class="col">
             <button @onclick="SubmitNumber">Go</button>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 
 @code {
 
@@ -55,13 +55,19 @@
     public EventCallback OnNumberSubmitted { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnNumberPressed { get; set; }
+    public EventCallback<int?> OnNumberChanged { get; set; }
 
 
     private async Task PressNumber(int number)
     {
         _number.Append(number);
-        await OnNumberPressed.InvokeAsync(int.Parse(_number.ToString()));
+        await OnNumberChanged.InvokeAsync(int.Parse(_number.ToString()));
+    }
+
+    private async Task RemoveNumber()
+    {
+        _number.Remove(_number.Length-1,1);
+        await OnNumberChanged.InvokeAsync(int.TryParse(_number.ToString(), out var result) ? result : null);
     }
 
     private async Task SubmitNumber()

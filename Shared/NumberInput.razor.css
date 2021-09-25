@@ -1,0 +1,8 @@
+#number-input div.row {
+    padding-top: 15px;
+}
+
+#number-input button {
+    width: inherit;
+    height: 120px;
+}

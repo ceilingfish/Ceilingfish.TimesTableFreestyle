@@ -4,7 +4,7 @@
     <span>@FirstNumber</span> x <span>@SecondNumber</span>
 </section>
 <div>@UserAnswer</div>
-<NumberInput OnNumberPressed="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+<NumberInput OnNumberChanged="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
 @foreach (var result in Results) {
     if (result) {
         <span style="color: green">&#10004;</span>
@@ -40,7 +40,7 @@
         GenerateQuestion();
     }
 
-    private void UpdateAnswerDisplay(int number) {
+    private void UpdateAnswerDisplay(int? number) {
         UserAnswer = number;
     }
 }
