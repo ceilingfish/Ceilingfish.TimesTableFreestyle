@@ -1,0 +1,15 @@
+#result-display {
+    margin-top: 10px;
+}
+
+#result-display li {
+    border-radius: 10px;
+}
+
+.correct-answer .icon {
+    color: green
+}
+
+.wrong-answer .icon {
+    color: red;
+}

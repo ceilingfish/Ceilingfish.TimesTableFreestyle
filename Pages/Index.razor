@@ -4,33 +4,32 @@
     <div id="question-display">
         @FirstNumber <span class="operator">x</span> @SecondNumber
     </div>
-    <UserAnswerDisplay Value="UserAnswer" />
-    <NumberInput OnNumberChanged="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+    <div>
+        <UserAnswerDisplay Value="UserAnswer" />
+    </div>
+    <div class="row">
+        <NumberInput OnNumberChanged="UpdateAnswerDisplay" OnNumberSubmitted="CheckAnswer" />
+    </div>
+    <div class="row">
+        <ResultDisplay @ref="Results" />
+    </div>
 </div>
 
-<ul>
-@foreach (var result in Results) {
-    if (result.Correct) {
-        <li class="correct-answer">&#10004;</li>
-    }
-    else {
-        <li class="wrong-answer">&#10008; <strong>@result.CorrectAnswer</strong></li>
-    }
-}
-</ul>
+
 @code {
     int FirstNumber { get; set; }
     int SecondNumber { get; set; }
     int? UserAnswer { get; set; }
-    List<(bool Correct, string CorrectAnswer)> Results = new ();
+    private ResultDisplay? Results;
 
     protected override void OnInitialized()
     {
-        GenerateQuestion();
+        NextQuestion();
     }
 
-    private void GenerateQuestion()
+    private void NextQuestion()
     {
+        UserAnswer = null;
         var random = new Random();
         FirstNumber = random.Next(1, 12);
         SecondNumber = random.Next(1, 2) * 5;
@@ -38,11 +37,9 @@
 
     private void CheckAnswer()
     {
-        var correct = UserAnswer == (FirstNumber * SecondNumber);
-        Results.Add((correct, $"{FirstNumber} x {SecondNumber} = {FirstNumber * SecondNumber}"));
-
-        UserAnswer = null;
-        GenerateQuestion();
+        Results!.AddAnswer(UserAnswer ?? 0, FirstNumber, SecondNumber);
+        
+        NextQuestion();
     }
 
     private void UpdateAnswerDisplay(int? number) {

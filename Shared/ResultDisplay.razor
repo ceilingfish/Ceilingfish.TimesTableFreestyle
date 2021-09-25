@@ -1,0 +1,25 @@
+<ul id="result-display" class="list-group list-group-flush">
+    @foreach (var result in Results) {
+        <li class="list-group-item  @(@result.Correct ? "list-group-item-success correct-answer" : "list-group-item-danger wrong-answer")">
+            @if (result.Correct) {
+                <span class="icon">&#10004;</span>
+            }
+            else {
+                <span class="icon">&#10008;</span>
+            }
+            &nbsp;
+            @result.FirstNumber x @result.SecondNumber = <strong>@result.CorrectAnswer</strong>
+        </li>
+    }
+</ul>
+
+@code {
+    private List<Result> Results { get; set; } = new ();
+
+    public void AddAnswer(int userAnswer, int firstNumber, int secondNumber)
+    {
+        Console.WriteLine("Adding answer {0}", userAnswer);
+        Results.Add(new Result(userAnswer, firstNumber, secondNumber));
+        StateHasChanged();
+    }
+}
