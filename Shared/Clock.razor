@@ -1,0 +1,28 @@
+@using System.Diagnostics;
+@using System.Timers;
+
+<div id="timer">
+    @_elapsed.Elapsed
+</div>
+
+@code {
+    private readonly Stopwatch _elapsed = new Stopwatch();
+    private readonly Timer _updateDisplay;
+
+    public Clock()
+    {
+        _updateDisplay = new Timer(100);
+	    _updateDisplay.Elapsed += UpdateDisplay;   
+    }
+
+    protected override void OnInitialized()
+    {
+        _elapsed.Start();
+        _updateDisplay.Start();
+    }
+
+    private void UpdateDisplay(object sender, ElapsedEventArgs  state)
+    {
+        StateHasChanged();
+    }
+}
