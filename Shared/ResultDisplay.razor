@@ -1,6 +1,6 @@
-<ul id="result-display" class="list-group list-group-flush">
+<ul id="result-display" class="list-inline">
     @foreach (var result in Results) {
-        <li class="list-group-item  @(@result.Correct ? "list-group-item-success correct-answer" : "list-group-item-danger wrong-answer")">
+        <li class="list-inline-item  @(@result.Correct ? "correct-answer" : "wrong-answer")">
             @if (result.Correct) {
                 <span class="icon">&#10004;</span>
             }
@@ -16,10 +16,9 @@
 @code {
     private List<Result> Results { get; set; } = new ();
 
-    public void AddAnswer(int userAnswer, int firstNumber, int secondNumber)
-    {
-        Console.WriteLine("Adding answer {0}", userAnswer);
-        Results.Add(new Result(userAnswer, firstNumber, secondNumber));
+    public void AddAnswer(Result result)
+    {    
+        Results.Add(result);
         StateHasChanged();
     }
 }

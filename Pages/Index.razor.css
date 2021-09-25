@@ -3,6 +3,11 @@
     font-size: 300%;
 }
 
+#tally-display {
+    text-align: center;
+    font-size: 300%;
+}
+
 #question-display .operator {
     color: red;
 }

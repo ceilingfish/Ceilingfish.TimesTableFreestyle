@@ -15,13 +15,18 @@
 	    _updateDisplay.Elapsed += UpdateDisplay;   
     }
 
+    public void Stop()
+    {
+        _elapsed.Stop();
+    }
+
     protected override void OnInitialized()
     {
         _elapsed.Start();
         _updateDisplay.Start();
     }
 
-    private void UpdateDisplay(object sender, ElapsedEventArgs  state)
+    private void UpdateDisplay(object? sender, ElapsedEventArgs  state)
     {
         StateHasChanged();
     }

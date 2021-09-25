@@ -1,10 +1,18 @@
 @page "/"
 
-<Clock />
+<Clock @ref="Clock" />
 <div class="container">
-    <div id="question-display">
-        @FirstNumber <span class="operator">x</span> @SecondNumber
-    </div>
+    
+        @if (_finished) {
+            <div id="tally-display">
+                Complete! @_correctCount out of @_answerCount correct
+            </div>
+        }
+        else {
+            <div id="question-display">
+                @FirstNumber <span class="operator">x</span> @SecondNumber      
+            </div>
+        }
     <div>
         <UserAnswerDisplay Value="UserAnswer" />
     </div>
@@ -18,10 +26,14 @@
 
 
 @code {
+    private readonly Random _random = new Random();
     int FirstNumber { get; set; }
     int SecondNumber { get; set; }
     int? UserAnswer { get; set; }
     private ResultDisplay? Results;
+    private Clock? Clock;
+    private bool _finished;
+    private int _answerCount, _correctCount;
 
     protected override void OnInitialized()
     {
@@ -31,19 +43,33 @@
     private void NextQuestion()
     {
         UserAnswer = null;
-        var random = new Random();
-        FirstNumber = random.Next(1, 12);
-        SecondNumber = random.Next(1, 2) * 5;
+        FirstNumber = _random.Next(1, 12);
+        SecondNumber = _random.Next(1, 3) * 5;
     }
 
     private void CheckAnswer()
     {
-        Results!.AddAnswer(UserAnswer ?? 0, FirstNumber, SecondNumber);
+        if (_finished) return;
+
+        _answerCount++;
+        var result = new Result(UserAnswer ?? 0, FirstNumber, SecondNumber);
+        if (result.Correct)
+            _correctCount++;
+        Results!.AddAnswer(result);
+        if (_answerCount == 10)
+        {
+            _finished = true;
+            Clock!.Stop();
+        }
+        else
+        {
+            NextQuestion();
+        }
         
-        NextQuestion();
     }
 
     private void UpdateAnswerDisplay(int? number) {
+        if (_finished) return;
         UserAnswer = number;
     }
 }
